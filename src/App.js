@@ -47,6 +47,8 @@ import Item from './components/Items/Item';
 import Cart from './components/cart/cart';
 import CartContext from './store/cart-context';
 import About from './components/About/About';
+import Home from './components/Home/Home';
+import ContactUs from './components/contactus/ContactUs';
 import { Navbar, Container } from 'react-bootstrap';
 
 function App() {
@@ -65,6 +67,7 @@ function App() {
           <Navbar.Brand as={Link} to="/">HOME</Navbar.Brand>
           <Navbar.Brand as={Link} to="/store">STORE</Navbar.Brand>
           <Navbar.Brand as={Link} to="/about">ABOUT</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/contactus">CONTACTUS</Navbar.Brand>
         </Container>
 
         <button onClick={toggleCartHandler}>Cart {cartctx.items.length}</button>
@@ -75,6 +78,7 @@ function App() {
         <Route path="/store" element={<Item />} />
         <Route path="/about" element={<About />} />
         <Route path="/" element={<Home />} />
+        <Route path="/contactus" element={<ContactUs/>}/>
       </Routes>
 
       <div className={`cart-container ${isCartOpen ? 'cart-open' : ''}`}>
@@ -84,8 +88,6 @@ function App() {
   );
 }
 
-function Home() {
-  return <p>Home Page Content</p>;
-}
+
 
 export default App;
