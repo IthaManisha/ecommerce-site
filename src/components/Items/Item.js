@@ -2,6 +2,8 @@ import React,{useContext} from "react";
 import './Item.css'
 import Button from 'react-bootstrap/Button';
 import CartContext from "../../store/cart-context";
+import AuthContext from "../../store/auth-context";
+import axios from "axios";
 
 const cartElements = [
     {
@@ -35,10 +37,13 @@ const cartElements = [
     ]
 
     
-const Item = () => {
+  const Item =()=>{
+    const URL=`https://crudcrud.com/api/bf4c5bb3a0784dfe82b48058bbd42e3a`;
     const cartCtx = useContext(CartContext);
-    const addToCartHandler = (items) => {
-
+    const authCtx = useContext(AuthContext);
+    async function addToCartHandler(items){
+      const userToken = authCtx.token;
+      if (userToken) {
         const itemToAdd = {
             id: items.id,
             imageUrl:items.imageUrl,
@@ -48,6 +53,27 @@ const Item = () => {
           };
         
           cartCtx.addItem(itemToAdd);
+          try{
+            
+            //const modifiedEmail = encodeURIComponent(authCtx.email);
+           const userModifiedEmail = authCtx.email.replace(/[.@]/g, ''); // Modify email ID
+           console.log(userModifiedEmail);
+           const response = await axios.post(`${URL}/${userModifiedEmail}`, itemToAdd);
+            //const queryParams = `?email=${encodeURIComponent(authCtx.email)}`;
+            //const response = await axios.post(`${URL}${queryParams}`, itemToAdd);
+
+           /* const response = await axios.post(URL, {
+              email: userModifiedEmail,
+              item: itemToAdd,
+            });*/
+            console.log("post response",response);
+          }catch(error){
+            console.error("Error creating item:", error);
+          }
+        } else {
+          // Handle the case when user is not authenticated
+          console.log("User is not authenticated");
+        }
      
       };
   return (

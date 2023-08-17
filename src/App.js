@@ -18,6 +18,10 @@ function App() {
     setIsCartOpen(prevIsCartOpen => !prevIsCartOpen);
   }
 
+  const logOutHandler=()=>{
+    authCtx.logout();
+  }
+
   const cartctx = useContext(CartContext);
 
   const authCtx=useContext(AuthContext);
@@ -32,15 +36,15 @@ function App() {
         {!isLoggenIn && <Navbar.Brand as={Link} to="/about">ABOUT</Navbar.Brand>}
         {isLoggenIn && <Navbar.Brand as={Link} to="/contactus">CONTACTUS</Navbar.Brand>}
           {!isLoggenIn && <Navbar.Brand as={Link} to="/auth" style={{marginLeft:'30px'}}>Login</Navbar.Brand>}
-          {isLoggenIn && <Navbar.Brand as={Link} to="/">Logout</Navbar.Brand>}
+          {isLoggenIn && <Navbar.Brand as={Link} to="/" onClick={logOutHandler}>Logout</Navbar.Brand>}
         </Container>
 
-        <button onClick={toggleCartHandler}>Cart {cartctx.items.length}</button>
+        {isLoggenIn && <button onClick={toggleCartHandler}>Cart {cartctx.items.length}</button>}
       </Navbar>
       <h2 style={{ color: 'white', fontSize: '100px', padding: '40px', background: 'lightgreen' }}>The Generics</h2>
 
       <Routes> {/* Use Routes instead of Switch */}
-        <Route path="/store" element={<Item />} />
+        {isLoggenIn && <Route path="/store" element={<Item />} />}
         <Route path="/about" element={<About />} />
         <Route path="/home" element={<Home />} />
         <Route path="/contactus" element={<ContactUs/>}/>

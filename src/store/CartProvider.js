@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CartContext from './cart-context';
 import Alert from 'react-bootstrap/Alert';
+import axios from 'axios';
 
 const CartProvider = (props) => {
     const [cartItems, setCartItems] = useState([]);
@@ -42,6 +43,11 @@ const CartProvider = (props) => {
             setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
             
           } 
+          try {
+             axios.delete(`https://crudcrud.com/api/22a3c72faee142dd93a72ac596dfd397/ecommerce/${id}`);
+        } catch (error) {
+            console.error("Error deleting item from remote data:", error.response.data);
+        }
           // Update total amount by subtracting the item's price
           setTotalAmount((prevTotalAmount) => prevTotalAmount - existingItem.price);
           
@@ -51,8 +57,8 @@ const CartProvider = (props) => {
         items: cartItems,
         totalAmount: totalAmount,
         addItem: addItemToCartHandler,
-        removeItem:removeItemFromCartHandler
-        
+        removeItem:removeItemFromCartHandler,
+        setTotalAmount:setTotalAmount, 
       };
     
       return <CartContext.Provider value={cartContext}>
